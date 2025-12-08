@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../base
+  - ingress.yaml
 
 # Prod 환경에 맞는 패치나 설정을 여기에 추가합니다.
 # commonLabels:
