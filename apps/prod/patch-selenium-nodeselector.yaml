@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenium-chrome
+spec:
+  template:
+    spec:
+      nodeSelector:
+        lifecycle: spot

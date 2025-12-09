@@ -129,3 +129,7 @@ Thumbs.db
 *.swp
 *.bak
 *.orig
+secret.yaml
+secret-values.env
+generate-secret.sh
+secret-wallet.yaml

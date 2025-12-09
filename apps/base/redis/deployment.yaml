@@ -14,7 +14,31 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:7-alpine
+        image: redis:7-alpine@sha256:ee64a64eaab618d88051c3ade8f6352d11531fcf79d9a4818b9b183d8c1d18ba
         ports:
         - containerPort: 6379
-        command: ["redis-server", "--appendonly", "yes"]
+
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: trend-secret
+              key: REDIS_PASSWORD
+
+        volumeMounts:
+        - name: redis-conf
+          mountPath: /usr/local/etc/redis/redis.conf
+          subPath: redis.conf
+
+        command:
+          - sh
+          - -c
+          - |
+            cp /usr/local/etc/redis/redis.conf /tmp/redis.conf && \
+            sed -i "s/\${REDIS_PASSWORD}/$REDIS_PASSWORD/" /tmp/redis.conf && \
+            exec redis-server /tmp/redis.conf
+
+      volumes:
+      - name: redis-conf
+        configMap:
+          name: redis-config

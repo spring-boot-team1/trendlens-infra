@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
+  labels:
+    app: api
 spec:
   replicas: 1
   selector:
@@ -13,7 +15,36 @@ spec:
         app: api
     spec:
       containers:
-      - name: api
-        image: nginx:latest
-        ports:
-        - containerPort: 80
+        - name: api
+          image: api:local  # ← 실제 이미지로 교체
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+      
+          envFrom:
+            - secretRef:
+                name: trend-secret   # JWT, DB_URL, REDIS 등
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+            - name: SELENIUM_URL
+              value: "http://selenium-chrome-service:4444/wd/hub"
+
+          volumeMounts:
+            - name: wallet
+              mountPath: /wallet     # Oracle Wallet mount
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+
+      volumes:
+        - name: wallet
+          secret:
+            secretName: adb-wallet   # wallet.zip 들어있는 Secret
