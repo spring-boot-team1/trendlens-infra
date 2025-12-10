@@ -133,3 +133,6 @@ secret.yaml
 secret-values.env
 generate-secret.sh
 secret-wallet.yaml
+Wallet_UP2IBKZW6S7D1H75.zip
+wallet-creator.sh
+wallet/

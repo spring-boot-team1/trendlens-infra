@@ -29,8 +29,14 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
 
+            - name: TNS_ADMIN
+              value: /wallet
+
             - name: SELENIUM_URL
               value: "http://selenium-chrome-service:4444/wd/hub"
+
+            - name: FILE_UPLOAD_DIR
+              value: "/app/uploads"   # 너가 원하는 경로로 설정
 
           volumeMounts:
             - name: wallet
