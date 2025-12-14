@@ -5,8 +5,18 @@ resources:
   - ../base
   - ingress.yaml
 
+patches:
+  - path: patch-api.yaml
+    target:
+      kind: Deployment
+      name: api
 
+  - path: patch-selenium-antiaffinity.yaml
+    target:
+      kind: Deployment
+      name: selenium-chrome
 
-# Prod 환경에 맞는 패치나 설정을 여기에 추가합니다.
-# commonLabels:
-#   environment: prod
+  - path: patch-selenium-nodeselector.yaml
+    target:
+      kind: Deployment
+      name: selenium-chrome

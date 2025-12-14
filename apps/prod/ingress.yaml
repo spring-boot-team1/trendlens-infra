@@ -1,19 +1,41 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-ingress
+  name: trendlens-ingress
   annotations:
+    # --- ALB 기본 설정 ---
     kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # --- 포트 설정 (HTTP 80 + HTTPS 443) ---
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+
+    # --- ACM 인증서 적용 ---
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:609365818761:certificate/02a2192b-b02b-40c9-b55c-94e6b7f1b9de
+
+    # --- HTTP를 HTTPS로 강제 리다이렉트 ---
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+    # (선택) Health Check 커스터마이즈
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+
 spec:
+  ingressClassName: alb
+
   rules:
-  - host: api.my-domain.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: api
-            port:
-              number: 80
+    - host: api.trendslens.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service     # ← 반드시 service 이름과 동일해야 함
+                port:
+                  number: 8080        # ← api-service 포트랑 동일하게
+
+  tls:
+    - hosts:
+        - api.trendslens.xyz
+      secretName: dummy-tls-used-by-alb   # 실제 TLS는 ALB가 처리함

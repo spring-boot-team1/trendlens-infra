@@ -6,4 +6,3 @@ resources:
   - redis
   - selenium-chrome
   - secret.yaml
-  - secret-wallet.yaml

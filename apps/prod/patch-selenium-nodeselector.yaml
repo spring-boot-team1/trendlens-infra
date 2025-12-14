@@ -6,4 +6,4 @@ spec:
   template:
     spec:
       nodeSelector:
-        lifecycle: spot
+        eks.amazonaws.com/capacityType: ON_DEMAND

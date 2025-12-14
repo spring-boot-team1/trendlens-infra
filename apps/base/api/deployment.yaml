@@ -14,33 +14,59 @@ spec:
       labels:
         app: api
     spec:
+      serviceAccountName: trendlens-api-sa
+
       containers:
         - name: api
-          image: api:local  # ← 실제 이미지로 교체
-          imagePullPolicy: Never
+          image: api
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
-      
+
+          # 공통 시크릿
           envFrom:
             - secretRef:
-                name: trend-secret   # JWT, DB_URL, REDIS 등
+                name: trend-secret
 
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
 
-            - name: TNS_ADMIN
-              value: /wallet
+            - name: CUSTOM_S3_PREFIX_PROFILEPIC
+              value: "profilepic"
 
             - name: SELENIUM_URL
               value: "http://selenium-chrome-service:4444/wd/hub"
 
             - name: FILE_UPLOAD_DIR
-              value: "/app/uploads"   # 너가 원하는 경로로 설정
+              value: "/app/uploads"
 
+            # 🔥 Oracle Wallet 위치 (mTLS 핵심)
+            - name: TNS_ADMIN
+              value: /opt/oracle/wallet
+
+          # 🔥 Wallet 마운트
           volumeMounts:
-            - name: wallet
-              mountPath: /wallet     # Oracle Wallet mount
+            - name: adb-wallet
+              mountPath: /opt/oracle/wallet
+              readOnly: true
+
+          readinessProbe:
+            httpGet:
+              path: /trend/actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /trend/actuator/health
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            failureThreshold: 3
+
 
           resources:
             requests:
@@ -51,6 +77,6 @@ spec:
               memory: "1Gi"
 
       volumes:
-        - name: wallet
+        - name: adb-wallet
           secret:
-            secretName: adb-wallet   # wallet.zip 들어있는 Secret
+            secretName: adb-wallet
