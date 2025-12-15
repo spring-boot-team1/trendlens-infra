@@ -31,7 +31,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-service     # ← 반드시 너의 service 이름과 동일해야 함
+                name: api-service     # ← 반드시 service 이름과 동일해야 함
                 port:
                   number: 8080        # ← api-service 포트랑 동일하게
 
