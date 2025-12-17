@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: api
 spec:
-  replicas: 2  # Scale up for High Availability
+  replicas: 1  
   template:
     spec:
       containers:
         - name: api
           # In Prod, use real registry image. Update this via CI/CD.
-          image: 609365818761.dkr.ecr.ap-northeast-2.amazonaws.com/trendlens/api:v0.26.0 
+          image: 609365818761.dkr.ecr.ap-northeast-2.amazonaws.com/trendlens/api:v0.4.0-4 
           imagePullPolicy: IfNotPresent # Always / Never
           env:
             - name: SPRING_PROFILES_ACTIVE

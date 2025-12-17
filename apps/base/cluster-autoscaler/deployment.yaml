@@ -14,22 +14,17 @@ spec:
         app: cluster-autoscaler
     spec:
       serviceAccountName: cluster-autoscaler
-
-      # 🔒 spot 노드 절대 안 탐
-      nodeSelector:
-        lifecycle: ondemand
-
       containers:
         - name: cluster-autoscaler
-          image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.34.0
+          image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.29.0
           command:
             - ./cluster-autoscaler
             - --cloud-provider=aws
-            - --cluster-name=trendlens
-            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/trendlens
-            - --balance-similar-node-groups
+            # min:max:ASG_NAME (Spot 전용)
+            - --nodes=1:2:eks-trendlens-ng-spot-c7iflexlarge-decd8617-d4dd-a3c0-a5e1-0e99dbacee8b
             - --skip-nodes-with-system-pods=false
-            - --skip-nodes-with-local-storage=false
+            - --balance-similar-node-groups
+            - --expander=least-waste
             - --stderrthreshold=info
             - --v=4
           resources:

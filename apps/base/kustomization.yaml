@@ -6,3 +6,4 @@ resources:
   - redis
   - selenium-chrome
   - secret.yaml
+  - cluster-autoscaler
