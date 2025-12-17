@@ -9,7 +9,7 @@ spec:
       containers:
         - name: api
           # In Prod, use real registry image. Update this via CI/CD.
-          image: 609365818761.dkr.ecr.ap-northeast-2.amazonaws.com/trendlens/api:v0.4.0-4 
+          image: 609365818761.dkr.ecr.ap-northeast-2.amazonaws.com/trendlens/api:v0.4.0-6 
           imagePullPolicy: IfNotPresent # Always / Never
           env:
             - name: SPRING_PROFILES_ACTIVE

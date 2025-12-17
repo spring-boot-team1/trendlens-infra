@@ -21,7 +21,7 @@ spec:
             - ./cluster-autoscaler
             - --cloud-provider=aws
             # min:max:ASG_NAME (Spot 전용)
-            - --nodes=1:2:eks-trendlens-ng-spot-c7iflexlarge-decd8617-d4dd-a3c0-a5e1-0e99dbacee8b
+            - --nodes=0:2:eks-trendlens-ng-spot-c7iflexlarge-decd8617-d4dd-a3c0-a5e1-0e99dbacee8b
             - --skip-nodes-with-system-pods=false
             - --balance-similar-node-groups
             - --expander=least-waste
