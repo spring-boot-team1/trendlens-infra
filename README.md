@@ -1,17 +1,14 @@
 # TrendLens Infrastructure
 
-![TrendLens Banner](assets/banner.png)
 
 > **Modern GitOps-based Infrastructure for TrendLens Service**
 >
 > ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
-> ![ArgoCD](https://img.shields.io/badge/argocd-%23eb5b34.svg?style=for-the-badge&logo=argo&logoColor=white)
 > ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-> ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
 > ![Kustomize](https://img.shields.io/badge/kustomize-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
 TrendLens 서비스를 위한 **Infrastructure as Code (IaC)** 저장소입니다.  
-AWS EKS 클러스터 프로비저닝과 ArgoCD 도입을 위한 **GitOps 기반 폴더 구조**를 제공합니다.
+AWS EKS 클러스터와 ArgoCD 도입을 위한 **GitOps 기반 폴더 구조**를 제공합니다.
 
 ---
 
@@ -97,3 +94,4 @@ kubectl apply -f argocd/app-of-apps.yaml
   - 고가용성 (HA) 구성 (Replicas: 2+)
   - 안정적인 ECR 이미지 태그 사용 (`Need CI/CD`)
   - 리소스 제한 (Limits/Requests) 및 Health Probe 적용
+
